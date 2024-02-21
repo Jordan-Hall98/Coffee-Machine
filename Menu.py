@@ -38,7 +38,7 @@ coffee_art = '''
    ( (
     ) )
   ........
-  |      |]
+  |      |]    Welcome to Café Vegu
   \      /    
    `----'
 

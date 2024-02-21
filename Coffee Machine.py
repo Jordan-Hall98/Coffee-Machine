@@ -1,6 +1,7 @@
 from Menu import MENU, resources, coffee_art
 import os
 
+#Define function to be used when printing the report of the current stock inside the machine
 def print_report():
     '''This function will print the resources currently in the machine'''
     for key in resources:
@@ -9,6 +10,7 @@ def print_report():
         print (f"{key}: {quantity}")
 
 
+#Define a function that will be used to refill the machine
 def refill():
     '''This function will refill the coffee machine'''
     for key in resources:
@@ -21,6 +23,7 @@ def refill():
     return "Coffee machine refilled"
         
 
+#Define a function that will identify the choice of drink or identify if the user has inputted an invalid request
 def drink_chosen(drink):
     '''This function identifies if the request is for a drink'''
     if drink == "espresso" or drink == "latte" or drink == "cappuccino":
@@ -30,6 +33,7 @@ def drink_chosen(drink):
         return False
 
 
+#Define a function that will find the cost of the required drink
 def choice_of_drink_cost(choice):
     '''This function returns the cost of the drink they have requested'''
     print (f"A {choice} costs ${MENU[choice]["cost"]}")
@@ -37,17 +41,7 @@ def choice_of_drink_cost(choice):
     return cost
 
 
-def money_required(choice):
-    '''This function identifies if the request is a drink or not'''
-    if choice == "report":
-        print_report()
-    elif not drink_chosen(choice):
-        print ("Please choose another choice")
-        return
-    else:
-        return choice_of_drink_cost(drink_chosen(choice))
-        
-
+#Define a function that will check the coins inputted against the cost of the drink
 def is_drink_paid_for(drink_cost):
     '''This function checks the money inputted against the cost of the drink'''
     sum_of_quarters = int(input("How many quarters would you like to use? ")) * 0.25
@@ -56,6 +50,7 @@ def is_drink_paid_for(drink_cost):
     sum_of_pennies = int(input("How many pennies would you like to use? ")) * 0.01
     total_inputted_sum = (sum_of_quarters + sum_of_dimes + sum_of_nickles + sum_of_pennies)
 
+    #check if the user requires change, if they have paid the right amount or if they have not paid enough 
     if total_inputted_sum > drink_cost:
         change = round((total_inputted_sum - drink_cost),2)
         print (f"Thank you, Your change is ${change}")
@@ -71,6 +66,7 @@ def is_drink_paid_for(drink_cost):
         return False
 
 
+#Define a function that will remove the resources used in the drink from the stock of the machine
 def drink_resources_used(drink_chosen):
     '''This function removes the resources from the machine once a drink has been made'''
     for key in MENU[drink_chosen]["ingredients"]:
@@ -80,6 +76,7 @@ def drink_resources_used(drink_chosen):
         resources[key] = remaining_quantity
         
 
+#Define a function that will check to see if the machine has enough resources to make the requested drink
 def does_machine_have_enough_resources(drink_chosen):
     '''This machine will compare resources of requested drink against the resources currently in the machine'''
     water_required = MENU[drink_chosen]["ingredients"]["water"]
@@ -103,23 +100,21 @@ def does_machine_have_enough_resources(drink_chosen):
         return True
     
 
-
-
-# customers_choice = input("What would you like to order? 'Espresso', 'Latte' or 'Cappuchino'? or you can request a 'report' or you can 'refill' the machine. You can also 'turn off' the machine ").lower()   
+#Clear screen ready for use
 os.system('cls')
 
+#Boolean variable to be used in loop
 turned_off = False
 
+#Coffee machine functions within this while loop
 while not turned_off:
-    
-
-
+    #Print coffee art for the user to see
     print(coffee_art)
 
-
+    #ask the user what they are after
     customers_choice = input("What would you like to order? 'Espresso', 'Latte' or 'Cappuccino'? or you can request a 'report' or you can 'refill' the machine. You can also 'turn off' the machine ").lower()
     
-
+    #provide the function relating to the request of the user
     if customers_choice == "report":
         print_report()
     elif customers_choice == "refill":
@@ -131,7 +126,7 @@ while not turned_off:
     
     elif does_machine_have_enough_resources(customers_choice):
 
-        cost_of_drink = (money_required(customers_choice))
+        cost_of_drink = (choice_of_drink_cost(customers_choice))
 
 
         make_drink = (is_drink_paid_for(cost_of_drink))
